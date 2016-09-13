@@ -1,0 +1,60 @@
+<?php
+
+/*
+        // settings
+        $dbhost                 = '127.0.0.1';
+        $dbpass                 = '123';
+        $dbrootpass             = 'u16u12a';
+        $etcHosts               = '/etc/hosts';
+        $docRoot                = '/Users/bayeer/Sites/';
+        $nginxConfDir           = '/usr/local/etc/nginx/';
+        $nginxLogDir            = '/usr/local/var/log/nginx/';
+        $nginxRestartCommand    = 'nginx -s reload';
+*/
+
+return [
+
+    /**
+     * Virtual hosts for local PC are generally defined in this file
+     */
+
+    'etc_hosts' => '/etc/hosts',
+
+    /**
+     * Document root for nginx
+     */
+    'document_root' => '/var/www/',
+
+    /**
+     * Nginx directory
+     */
+    'nginx_dir' => '/etc/nginx/',
+
+    /**
+     * Nginx log directory
+     */
+    'nginx_log_dir' => '/var/log/nginx/',
+
+    /**
+     * Nginx restart command
+     */
+    'nginx_restart_cmd' => 'service nginx reload',
+
+    /**
+     * PHP FPM socket path
+     */
+    'phpfpm_socket_path' => '/home/bayeer/.phpbrew/php/php-5.6.21/var/run/php-fpm.sock',
+
+    /*
+    Here are each of the database connections setup for your application
+    */
+
+    'mysql' => [
+        'host'      => 'localhost',
+        'username'  => 'root',
+        'root_password'  => 'u16u12a',
+        'charset'   => 'utf8',
+        'collation' => 'utf8_general_ci'
+    ],
+
+];

@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+<?php
+require __DIR__.'/vendor/autoload.php';
+
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Weber\Command\CreateDirectoryCommand;
+use Weber\Command\SetupSiteCommand;
+use Weber\Command\DeleteSiteCommand;
+
+$app = new Application('weber', '1.0 (dev)');
+$app->add(new CreateDirectoryCommand());
+$app->add(new SetupSiteCommand());
+$app->add(new DeleteSiteCommand());
+$app->run();

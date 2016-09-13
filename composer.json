@@ -1,0 +1,20 @@
+{
+    "name": "bayeer/weber",
+    "description": "nginx, php-fpm, virtual hosts manager",
+    "require-dev": {
+        "phpunit/phpunit": "^5.5"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Bayeer",
+            "email": "bairdarmaev@gmail.com"
+        }
+    ],
+    "require": {
+        "symfony/console": "^3.1"
+    },
+    "autoload": {
+        "psr-4": {"Weber\\": "classes/"}
+    }
+}
