@@ -82,6 +82,9 @@ EOF;
             $weber->createMySqlUser($conf['mysql']['host'], $siteName, $conf['mysql']['default_password'], $conf['mysql']['root_password'], $charset);
         }
 
+        // 7. set site directory owner including inner files
+        $weber->setFolderOwner($conf['document_root'], $dirName, $conf['os_username'], $conf['os_usergroup']);
+
         // 7. restarting nginx
         $weber->restartNginx($conf['nginx_restart_cmd']);
 

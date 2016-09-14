@@ -68,7 +68,7 @@ EOF;
         $weber->deleteNginxConfig($conf['nginx_dir'], $dirName);
 
         // 7. create MySQL user
-        //$weber->dropMySqlDatabase($conf['mysql']['host'], $siteName, $conf['mysql']['root_password']);
+        $weber->dropMySqlDatabase($conf['mysql']['host'], $siteName, $conf['mysql']['root_password']);
 
         // 8. restarting nginx
         $weber->restartNginx($conf['nginx_restart_cmd']);

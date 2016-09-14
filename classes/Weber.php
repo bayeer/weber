@@ -135,11 +135,13 @@ EOF
     public function setFolderOwner($docRoot, &$dirName, $osUserName, $osUserGroup)
     {
         if (false === shell_exec('sudo chown -R '.$osUserName.':'.$osUserGroup.' '.$docRoot.$dirName)) {
-            $this->output->writeln('Couldn\'t chown directory. Continue? (y/N):'. PHP_EOL);
-            $line = strtolower(readline('$ '));
-            if (strpos($line, 'y') !== 0) {
+            $helper = $this->command->getHelper('question');
+            $question = new ConfirmationQuestion(PHP_EOL.'Couldn\'t chown directory. Continue? (y/N):'. PHP_EOL, false);
+
+            if (!$helper->ask($this->input, $this->output, $question)) {
                 exit;
             }
+
             $this->output->writeln('[Skipped]'. PHP_EOL);
         }
         $this->output->writeln('chowned site directory'. PHP_EOL);
@@ -165,9 +167,10 @@ EOF
         $this->output->writeln('* Deleting site directory: '.$docRoot.$dirname.'...'. PHP_EOL);
 
         if (!file_exists($docRoot.$dirname)) {
-            $this->output->writeln('Directory doesn\'t exist. Continue? (y/N):'. PHP_EOL);
-            $line = strtolower(readline('$ '));
-            if (strpos($line, 'y') !== 0) {
+            $helper = $this->command->getHelper('question');
+            $question = new ConfirmationQuestion('Directory doesn\'t exist. Continue? (y/N):'. PHP_EOL, false);
+
+            if (!$helper->ask($this->input, $this->output, $question)) {
                 exit;
             }
             $this->output->writeln('[Skipped]'. PHP_EOL);
@@ -419,9 +422,11 @@ EOF;
         catch (Exception $ex) {
             $this->output->writeln('* Could not drop database. Exception:'. PHP_EOL);
             $this->output->writeln($ex->getMessage(). PHP_EOL);
-            $this->output->writeln(PHP_EOL. 'Continue? (y/N):'.PHP_EOL);
-            $line = strtolower(readline('$ '));
-            if (strpos($line, 'y') !== 0) {
+            
+            $helper = $this->command->getHelper('question');
+            $question = new ConfirmationQuestion(PHP_EOL. 'Continue? (y/N):'.PHP_EOL, false);
+
+            if (!$helper->ask($this->input, $this->output, $question)) {
                 exit;
             }
             $this->output->writeln('[Skipped]'. PHP_EOL);
@@ -450,9 +455,11 @@ EOF;
         catch (Exception $ex) {
             $this->output->writeln('* Could not update admin_passwordh in \'b_option\' table. Exception:'. PHP_EOL);
             $this->output->writeln($ex->getMessage(). PHP_EOL);
-            $this->output->writeln(PHP_EOL. 'Continue? (y/N):'.PHP_EOL);
-            $line = strtolower(readline('$ '));
-            if (strpos($line, 'y') !== 0) {
+
+            $helper = $this->command->getHelper('question');
+            $question = new ConfirmationQuestion(PHP_EOL. 'Continue? (y/N):'.PHP_EOL, false);
+
+            if (!$helper->ask($this->input, $this->output, $question)) {
                 exit;
             }
             $this->output->writeln('[Skipped]'. PHP_EOL);
