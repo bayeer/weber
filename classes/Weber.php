@@ -312,6 +312,15 @@ EOF
 
     }
 
+    public function executeLaraComposer($docRoot, $dirName)
+    {
+        // creating laravel project via composer
+        if (false===shell_exec('composer create-project --prefer-dist laravel/laravel '.$docRoot.$dirName)) {
+            die('Creating laravel project in \''.$docRoot.$dirName.'\' failed.' . PHP_EOL);
+        }
+        $this->output->writeln('* laravel project created via composer in '.$docRoot.$dirName. PHP_EOL);
+    }
+
     public function processBitrix($docRoot, $dirName, &$charset)
     {
         // 1 downloading bitrixsetup.php script
