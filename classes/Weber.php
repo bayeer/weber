@@ -419,7 +419,7 @@ EOF;
             $count = $dbh->exec("DROP DATABASE {$dbname}");
             $this->output->writeln('[OK]'. PHP_EOL);
         }
-        catch (Exception $ex) {
+        catch (\Exception $ex) {
             $this->output->writeln('* Could not drop database. Exception:'. PHP_EOL);
             $this->output->writeln($ex->getMessage(). PHP_EOL);
             
