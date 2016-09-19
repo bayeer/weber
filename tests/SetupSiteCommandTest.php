@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Weber\Command;
+namespace Weber\Command;
 
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
