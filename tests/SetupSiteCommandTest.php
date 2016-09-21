@@ -26,7 +26,8 @@ class SetupSiteCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(array(
                                     'command' => $command->getName(),
-                                    'sitename' => $sitename
+                                    'sitename' => $sitename,
+                                    'type' => 'bitrix'
                                 ));
 
         $sitepath = $conf['document_root'] . '/' . $dirname;
