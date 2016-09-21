@@ -17,69 +17,6 @@ class Weber
         $this->input = $input;
         $this->output = $output;
     }
-    public function checkBxLicenseParams(&$args)
-    {
-        
-        // 1. help
-        if (array_key_exists('help', $args)) {
-        $mess = <<<EOF
-Утилита продления лицензии Битрикс. Для корректной работы данного
-скрипта необходимо развернуть свежий тестовый сайт на Битрикс.
-
-Пример использования:
-  bxlicence -a bxtestsite.dev -b bxstaltorg.dev
-где
-  -a тестовый сайт
-  -b сайт, для которого требуется продлить лицензию
-
-EOF;
-            die($mess);
-        }
-
-        // 2. checking params
-        if (!(array_key_exists('a', $args) && $args['a'] && array_key_exists('b', $args) && $args['b'])) {
-            $mess = <<<EOF
-ошибка: Не хватает параметров!
-Попробуйте 'bxlicence --help' для дополнительной информации.
-
-EOF;
-            die($mess);
-        }
-    }
-
-    public function checkBxCreateParams(&$args)
-    {
-        if (empty($args)) {
-            $this->output->writeln(<<<EOF
-Missing 'n' argument
----
-Try like this:
-> bxsetupnewsite -n bxtest.dev --charset="cp1251"
-
-"bxsetupnewsite" v1.2 by Bayeer, 2016
-
-EOF);
-            exit;
-        }
-    }
-
-    public function checkBxDeleteParams(&$args)
-    {
-        if (empty($args)) {
-            $this->output->writeln(
-                <<<EOF
-Missing 'n' argument
----
-Try like this:
-> bxdeletesite -n bxtest.dev
-
-"bxdeletesite" v1.2 by Bayeer, 2016
-
-EOF
-);
-            exit;
-        }
-    }
 
     public function isSitenameMatch($etcHostsLine, $sitename)
     {
