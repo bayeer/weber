@@ -9,9 +9,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Weber\Command\CreateDirectoryCommand;
 use Weber\Command\SetupSiteCommand;
 use Weber\Command\DeleteSiteCommand;
+use Weber\Command\RenameSiteCommand;
 
 $app = new Application('weber', '1.0 (dev)');
 $app->add(new CreateDirectoryCommand());
 $app->add(new SetupSiteCommand());
 $app->add(new DeleteSiteCommand());
+$app->add(new RenameSiteCommand());
 $app->run();

@@ -98,6 +98,24 @@ class Weber
         $this->output->writeln(PHP_EOL. '* Created '.$docRoot.$dirName. PHP_EOL);
     }
 
+    public function renameDirectory($docRoot, &$dirName1, &$dirName2)
+    {
+        // 1. check if directory exists
+        if (!file_exists($docRoot.$dirName1)) {
+            die('Directory \'' . $docRoot.$dirName1 . '\' does not exist' . PHP_EOL);
+        }
+
+        // 2. creating directory in /var/www/
+        if (false === rename($docRoot.$dirName1, $docRoot.$dirName2)) {
+            die('Could not rename directory ' . PHP_EOL .
+                    $docRoot . $dirName1 . PHP_EOL . 
+                    ' to ' . PHP_EOL . 
+                    $docRoot . $dirName2 . PHP_EOL . 
+                    'Try to change chmod or run script under sudo.' . PHP_EOL);
+        }
+        $this->output->writeln(PHP_EOL. '* Renamed '. $docRoot.$dirName1 . ' to '.$docRoot.$dirName2. PHP_EOL);
+    }
+
     public function deleteDirectory($docRoot, &$dirname)
     {
         // 1. delete directory if directory exists
@@ -193,8 +211,8 @@ class Weber
         }
         $this->output->writeln('* Successfully created '.$nginxSitesAvailableDir.$dirName.PHP_EOL);
 
-        
-        
+
+
         // * creating symbolic link to /etc/nginx/sites-enabled/@$dirName
         
         if (false===symlink($nginxSitesAvailableDir.$dirName, $nginxSitesEnabledDir.$dirName)) {
@@ -215,7 +233,11 @@ class Weber
         // * deleting site symlink from from /etc/nginx/sites-enabled/
 
         $this->output->writeln('* Deleting site symlink '.$nginxSitesEnabledDir.$dirName.'...');
-        if (false === unlink($nginxSitesEnabledDir.$dirName)) {
+        try {
+            unlink($nginxSitesEnabledDir.$dirName);
+            $this->output->writeln('[OK]');
+        }
+        catch (\Exception $ex) {
             $helper = $this->command->getHelper('question');
             $question = new ConfirmationQuestion('Could not delete symlink: '.$nginxSitesEnabledDir.$dirName. '. Continue? (y/N):', false);
 
@@ -224,29 +246,25 @@ class Weber
             }
             $this->output->writeln('[Skipped]');
         }
-        else {
-            $this->output->writeln('[OK]');
-        }
 
 
 
         // * deleting site conf from /etc/nginx/sites-available/
 
         $this->output->writeln('* Deleting site config file '.$nginxSitesAvailableDir.$dirName.'...');
-        if (false === unlink($nginxSitesAvailableDir.$dirName)) {
+        try {
+            unlink($nginxSitesAvailableDir.$dirName);
+            $this->output->writeln('[OK]');
+        }
+        catch (\Exception $ex) {
             $helper = $this->command->getHelper('question');
             $question = new ConfirmationQuestion('Could not delete config file: '.$nginxSitesAvailableDir.$dirName.'. Continue? (y/N):', false);
 
             if (!$helper->ask($this->input, $this->output, $question)) {
                 exit;
             }
-
             $this->output->writeln('[Skipped]');
         }
-        else {
-            $this->output->writeln('[OK]');
-        }
-
     }
 
     public function executeLaraComposer($docRoot, $dirName)
@@ -338,6 +356,71 @@ EOF;
             die("DB ERROR: ". $e->getMessage() . PHP_EOL);
         }
         $this->output->writeln('* MySQL user `' . $dbname . '`@`localhost` successfully added'. PHP_EOL);
+    }
+
+    public function renameMysqlDatabase($dbhost, $dbrootpass, $dbname1, $dbname2, $charset='utf8')
+    {
+        try {
+            // 1. connecting to MySQL
+            $dbh1 = new \PDO("mysql:host={$dbhost};charset={$charset}","root",$dbrootpass);
+
+            // 2. setting exceptions mode ON
+            $dbh1->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
+            // 3. creating new database
+            $this->output->writeln('* Creating new database `'.$dbname2.'`...'. PHP_EOL);
+            $dbh1->exec("CREATE DATABASE `{$dbname2}` CHARSET {$charset} COLLATE {$charset}_general_ci");
+            $this->output->writeln('[OK]'. PHP_EOL);
+
+            $dbh1 = null; // closing first connection
+
+            // 3. moving tables by renaming
+            $dbh2 = new \PDO("mysql:host={$dbhost};dbname={$dbname1};charset={$charset}","root",$dbrootpass);
+
+            $this->output->writeln('* Renaming tables in '.$dbname1.'...'. PHP_EOL);
+
+            $query = $dbh2->query('SHOW TABLES');
+            $tables = $query->fetchAll(\PDO::FETCH_COLUMN);
+            foreach ($tables as $tablename) {
+                $dbh2->exec("RENAME TABLE `{$dbname1}`.`{$tablename}` TO `{$dbname2}`.`{$tablename}`");
+            }
+
+            $this->output->writeln('[OK]'. PHP_EOL);
+
+            // 4. revoking MySQL user privileges
+            $this->output->writeln('* Revoking all privileges from user '.$dbname1.'...'. PHP_EOL);
+            $dbh2->exec("REVOKE ALL PRIVILEGES ON {$dbname1}.* FROM '{$dbname1}'@'localhost'");
+            $this->output->writeln('[OK]'. PHP_EOL);
+
+            // 5. renaming mysql user
+            $this->output->writeln("* Renaming user `{$dbname1}` to `{$dbname2}`...". PHP_EOL);
+            $dbh2->exec("RENAME USER '{$dbname1}'@'localhost' TO '{$dbname2}'@'localhost'");
+            $this->output->writeln('[OK]'. PHP_EOL);
+
+            // 6. grant MySQL user privileges
+            $this->output->writeln('* Granting all privileges to user '.$dbname2.'...'. PHP_EOL);
+            $dbh2->exec("GRANT ALL ON `{$dbname2}`.* TO `{$dbname2}`@`localhost`;
+                        FLUSH PRIVILEGES;");
+            $this->output->writeln('[OK]'. PHP_EOL);
+
+
+            // 7. dropping MySQL database
+            $this->output->writeln('* Dropping database '.$dbname1.'...'. PHP_EOL);
+            $count = $dbh2->exec("DROP DATABASE {$dbname1}");
+            $this->output->writeln('[OK]'. PHP_EOL);
+        }
+        catch (\Exception $ex) {
+            $this->output->writeln('* Could not drop database. Exception:'. PHP_EOL);
+            $this->output->writeln($ex->getMessage(). PHP_EOL);
+            
+            $helper = $this->command->getHelper('question');
+            $question = new ConfirmationQuestion(PHP_EOL. 'Continue? (y/N):'.PHP_EOL, false);
+
+            if (!$helper->ask($this->input, $this->output, $question)) {
+                exit;
+            }
+            $this->output->writeln('[Skipped]'. PHP_EOL);
+        }
     }
 
     public function dropMysqlDatabase($dbhost, $dbname, $dbrootpass)
