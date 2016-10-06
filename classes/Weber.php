@@ -276,6 +276,15 @@ class Weber
         $this->output->writeln('* laravel project created via composer in '.$docRoot.$dirName. PHP_EOL);
     }
 
+    public function executeYii2Composer($docRoot, $dirName)
+    {
+        // creating laravel project via composer
+        if (false===shell_exec('composer create-project --prefer-dist yiisoft/yii2-app-advanced '.$docRoot.$dirName)) {
+            die('Creating yii2 project in \''.$docRoot.$dirName.'\' failed.' . PHP_EOL);
+        }
+        $this->output->writeln('* laravel project created via composer in '.$docRoot.$dirName. PHP_EOL);
+    }
+
     public function processBitrix($docRoot, $dirName, &$charset)
     {
         // 1 downloading bitrixsetup.php script

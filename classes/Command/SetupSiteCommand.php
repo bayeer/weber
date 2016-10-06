@@ -86,6 +86,10 @@ EOF;
             $weber->executeLaraComposer($conf['document_root'], $dirName);
         }
 
+        if ($type == 'yii2') {
+            $weber->executeYii2Composer($conf['document_root'], $dirName);
+        }
+
         // 7. set site directory owner including inner files
         $weber->setFolderOwner($conf['document_root'], $dirName, $conf['os_username'], $conf['os_usergroup']);
 
