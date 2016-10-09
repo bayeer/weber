@@ -30,16 +30,18 @@ EOF;
                 new InputDefinition(array(
                     new InputArgument('sitename', InputArgument::REQUIRED, 'The directory name.'),
                     new InputArgument('type', InputArgument::OPTIONAL, 'Site type', 'simple'),
-                    new InputOption('charset', 'charset', InputArgument::OPTIONAL, 'The site character set', 'utf8')
+                    new InputOption('charset', 'charset', InputArgument::OPTIONAL, 'The site character set', 'utf8'),
+                    new InputOption('distro', 'dist', InputArgument::OPTIONAL, 'Download installation files', 'yes')
                 ))
             );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $sitename = $input->getArgument('sitename');
-        $type = $input->getArgument('type');
-        $charset = $input->getOption('charset');
+        $sitename   = $input->getArgument('sitename');
+        $type       = $input->getArgument('type');
+        $distro     = $input->getOption('distro');
+        $charset    = $input->getOption('charset');
 
         $weberpath = realpath(__DIR__ . '/../../');
 
@@ -82,11 +84,11 @@ EOF;
             $weber->createMySqlUser($conf['mysql']['host'], $siteName, $conf['mysql']['default_password'], $conf['mysql']['root_password'], $charset);
         }
 
-        if ($type == 'laravel') {
+        if ($type == 'laravel' && $distro == 'yes') {
             $weber->executeLaraComposer($conf['document_root'], $dirName);
         }
 
-        if ($type == 'yii2') {
+        if ($type == 'yii2' && $distro == 'yes') {
             $weber->executeYii2Composer($conf['document_root'], $dirName);
         }
 
