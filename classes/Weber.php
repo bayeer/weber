@@ -443,7 +443,7 @@ EOF;
 
             // 3. revoking MySQL user privileges
             $this->output->writeln('* Revoking all privileges from user '.$dbname.'...'. PHP_EOL);
-            $dbh->exec("REVOKE ALL PRIVILEGES ON {$dbname}.* FROM '{$dbname}'@'localhost'");
+            $dbh->exec("REVOKE ALL PRIVILEGES ON `{$dbname}`.* FROM '{$dbname}'@'localhost'");
             $this->output->writeln('[OK]'. PHP_EOL);
 
             // 2. dropping MySQL user
@@ -454,7 +454,7 @@ EOF;
             // 3. dropping MySQL database
         
             $this->output->writeln('* Dropping database '.$dbname.'...'. PHP_EOL);
-            $count = $dbh->exec("DROP DATABASE {$dbname}");
+            $count = $dbh->exec("DROP DATABASE `{$dbname}`");
             $this->output->writeln('[OK]'. PHP_EOL);
         }
         catch (\Exception $ex) {
