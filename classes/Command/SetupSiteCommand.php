@@ -74,13 +74,13 @@ EOF;
         // 4. writing nginx config
         $weber->createNginxConfig($type, $conf['document_root'], $dirName, $conf['nginx_dir'], $conf['nginx_log_dir'], $charset, $conf['phpfpm_socket_path']);
 
-        if ($type == 'bitrix') {
-            // 5. downloading bitrixsetup.php script and creating MySQL user $dirName
+        if ($type == 'bitrix' && $distro == 'yes') {
+            // 5. downloading bitrixsetup.php script
             $weber->processBitrix($conf['document_root'], $dirName, $charset);
         }
 
         if ($type !== 'simple') {
-            // 6. create MySQL user
+            // 6. creating MySQL user
             $weber->createMySqlUser($conf['mysql']['host'], $siteName, $conf['mysql']['default_password'], $conf['mysql']['root_password'], $charset);
         }
 
