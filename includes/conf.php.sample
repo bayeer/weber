@@ -45,10 +45,9 @@ return [
      */
     'phpfpm_socket_path' => '/home/bayeer/.phpbrew/php/php-5.6.21/var/run/php-fpm.sock',
 
-    /*
-    Here are each of the database connections setup for your application
-    */
-
+    /**
+     * Here are each of the database connections setup for your application
+     */
     'mysql' => [
         'host'      => 'localhost',
         'username'  => 'root',
@@ -56,5 +55,13 @@ return [
         'charset'   => 'utf8',
         'collation' => 'utf8_general_ci'
     ],
+    /**
+     * OS username
+     */
+    'os_username' => 'vagrant',
+    /**
+     * OS user group
+     */
+    'os_usergroup' => 'vagrant'
 
 ];
