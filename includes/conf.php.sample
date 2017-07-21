@@ -52,6 +52,7 @@ return [
         'host'      => 'localhost',
         'username'  => 'root',
         'root_password'  => 'u16u12a',
+	'default_password' => '123',
         'charset'   => 'utf8',
         'collation' => 'utf8_general_ci'
     ],
