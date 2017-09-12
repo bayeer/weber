@@ -1,3 +1,5 @@
 /includes/conf.php
 /vendor/
 composer.lock
+/.idea/
+
