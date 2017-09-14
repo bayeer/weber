@@ -88,6 +88,10 @@ EOF;
             $weber->executeLaraComposer($conf['document_root'], $dirName);
         }
 
+        if ($type == 'yii1' && $distro == 'yes') {
+            $weber->executeYii1Composer($conf['document_root'], $dirName);
+        }
+
         if ($type == 'yii2' && $distro == 'yes') {
             $weber->executeYii2Composer($conf['document_root'], $dirName);
         }

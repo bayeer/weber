@@ -276,6 +276,19 @@ class Weber
         $this->output->writeln('* laravel project created via composer in '.$docRoot.$dirName. PHP_EOL);
     }
 
+    public function executeYii1Composer($docRoot, $dirName)
+    {
+        // creating laravel project via composer
+        if (false===shell_exec('composer create-project --prefer-dist yiisoft/yii '.$docRoot.$dirName)) {
+            die('Creating yii1 project in \''.$docRoot.$dirName.'\' failed.' . PHP_EOL);
+        }
+
+        if (false===shell_exec($docRoot.$dirName.'/framework/yiic webapp '.$docRoot.$dirName.'/public')) {
+            die('Creating webapp under '.$docRoot.$dirName.'/public failed'. PHP_EOL);
+        }
+        $this->output->writeln('* Yii1 webapp created under '.$docRoot.$dirName.'/public'. PHP_EOL);
+    }
+
     public function executeYii2Composer($docRoot, $dirName)
     {
         // creating laravel project via composer

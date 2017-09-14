@@ -12,7 +12,7 @@ server {
 	client_max_body_size 1024M;
 	client_body_buffer_size 4M;
 
-	root {$docRoot}{$dirName}/web;
+	root {$docRoot}{$dirName}/public;
 
 	location / {
 		allow 127.0.0.1;
