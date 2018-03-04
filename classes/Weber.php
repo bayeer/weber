@@ -51,7 +51,7 @@ class Weber
     public function getSitename(&$siteName)
     {
         // 2. getting sitename
-        $extension = '.dev';
+        $extension = '.test';
 
         if (false === strpos($siteName, '.')) {
             return $siteName;

@@ -17,9 +17,9 @@ class SetupSiteCommand extends Command
     {
         $help = <<<EOF
 Try like this:
-> ./weber setup-site test.dev --charset=cp1251"
+> ./weber setup-site site1.test --charset=cp1251"
 
-Weber v2.1 by Bayeer, 2016
+Weber v2.2 by Bayeer, 2016
 
 EOF;
         $this
@@ -57,7 +57,7 @@ EOF;
 
         // 2. getting sitename
         $siteName = $weber->getSitename($sitename);
-        $dirName = $siteName . '.dev';
+        $dirName = $siteName . '.test';
 
         // 3. paths and dirs
         $siteDir = $conf['document_root'] . $dirName;

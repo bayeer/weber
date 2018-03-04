@@ -17,9 +17,9 @@ class DeleteSiteCommand extends Command
     {
         $help = <<<EOF
 Try like this:
-> ./weber delete-site test.dev"
+> ./weber delete-site site1.test"
 
-Weber v2.1 by Bayeer, 2016
+Weber v2.2 by Bayeer, 2016
 
 EOF;
         $this
@@ -51,7 +51,7 @@ EOF;
 
         // 1. getting sitename
         $siteName = $weber->getSitename($sitename);
-        $dirName = $siteName . '.dev';
+        $dirName = $siteName . '.test';
 
         // 2. paths and dirs
         $siteDir = $conf['document_root'] . $dirName;

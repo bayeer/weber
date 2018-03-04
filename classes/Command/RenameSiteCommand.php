@@ -17,9 +17,9 @@ class RenameSiteCommand extends Command
     {
         $help = <<<EOF
 Try like this:
-> ./weber rename-site oldsitename.dev newsitename.dev"
+> ./weber rename-site oldsitename.test newsitename.test"
 
-Weber v2.1 by Bayeer, 2016
+Weber v2.2 by Bayeer, 2016
 
 EOF;
         $this
@@ -58,11 +58,11 @@ EOF;
         // 1. paths and dirs
 
         $siteName1 = $weber->getSitename($sitename1);
-        $dirName1 = $siteName1 . '.dev';
+        $dirName1 = $siteName1 . '.test';
         $siteDir1 = $conf['document_root'] . $dirName1;
 
         $siteName2 = $weber->getSitename($sitename2);
-        $dirName2 = $siteName2 . '.dev';
+        $dirName2 = $siteName2 . '.test';
         $siteDir2 = $conf['document_root'] . $dirName2;
 
         // 2. nginx directories

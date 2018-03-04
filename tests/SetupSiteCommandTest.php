@@ -11,14 +11,14 @@ class SetupSiteCommandTest extends TestCase
 {
     public function testSetupSite()
     {
-        $sitename = 'test1';
-        $dirname = 'test1.dev';
+        $sitename = 'site1';
+        $dirname = 'site1.test';
         $weberpath = realpath(__DIR__ . '/..');
 
         $conf = include($weberpath . '/includes/conf.php');
 
 
-        $app = new Application('weber', '1.0 (dev)');
+        $app = new Application('weber', 'v2.2');
         $app->add(new SetupSiteCommand());
         $app->add(new DeleteSiteCommand());
 
