@@ -48,10 +48,10 @@ class Weber
         return $charset;
     }
 
-    public function getSitename(&$siteName)
+    public function getSitename($siteName)
     {
         // 2. getting sitename
-        $extension = '.test';
+        $extension = '.loc';
 
         if (false === strpos($siteName, '.')) {
             return $siteName;
@@ -67,6 +67,25 @@ class Weber
         $siteName = substr($siteName, 0, strrpos($siteName, '.'.$extension));
 
         return $siteName;
+    }
+
+    public function getSiteDomain($siteName)
+    {
+        // 2. getting sitename
+        $domain = '.loc';
+
+        if (false === strpos($siteName, '.')) {
+            return $domain;
+        }
+
+        $parts = explode('.', $siteName);
+        $parts_cnt = count($parts);
+        
+        if ($parts[$parts_cnt-1]) {
+            $domain = '.' . $parts[$parts_cnt-1];
+        }
+
+        return $domain;
     }
 
     public function setFolderOwner($docRoot, &$dirName, $osUserName, $osUserGroup)

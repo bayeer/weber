@@ -13,8 +13,8 @@ class RenameSiteCommandTest extends TestCase
     {
         $sitename1 = 'site1';
         $sitename2 = 'site2';
-        $dirname1 = 'site1.dev';
-        $dirname2 = 'site2.dev';
+        $dirname1 = 'site1.loc';
+        $dirname2 = 'site2.loc';
         $weberpath = realpath(__DIR__ . '/..');
 
         $conf = include($weberpath . '/includes/conf.php');
@@ -23,7 +23,7 @@ class RenameSiteCommandTest extends TestCase
         $this->assertEquals('root', $conf['mysql']['username'], 'Database user is not \'root\'');
 
 
-        $app = new Application('weber', 'v2.2');
+        $app = new Application('weber', 'v2.3');
         $app->add(new SetupSiteCommand());
         $app->add(new RenameSiteCommand());
         $app->add(new DeleteSiteCommand());

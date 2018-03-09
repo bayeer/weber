@@ -45,10 +45,6 @@ server {
 		error_page 404 = /404.html;#не забываем создать страницу
 	}
 
-	location ~ (/bitrix/modules|/upload|/support|/bitrix/php_interface) {
-		deny all;
-	}
-
 	#все помнят это :)
 		location ~ /.svn/ {
 		deny all;

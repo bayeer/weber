@@ -16,7 +16,7 @@ class CreateDirectoryCommandTest extends TestCase
         $_SERVER['argv']['create-directory'] = 'create-directory';
         $_SERVER['argv'][$dirname] = $dirname;
 
-        $app = new Application('weber', 'v2.2');
+        $app = new Application('weber', 'v2.3');
         $app->add(new CreateDirectoryCommand());
 
         $command = $app->find('create-directory');
