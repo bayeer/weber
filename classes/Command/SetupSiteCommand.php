@@ -15,11 +15,14 @@ class SetupSiteCommand extends Command
 {
     protected function configure()
     {
+        $weberpath = realpath(__DIR__ . '/../../');
+        $conf = include($weberpath . '/includes/conf.php');
+
         $help = <<<EOF
 Try like this:
 > ./weber setup-site site1.loc --charset=cp1251"
 
-Weber v2.3 by Bayeer, 2016-2018
+Weber {$conf['version']} by Bayeer, 2016-2018
 
 EOF;
         $this
@@ -44,14 +47,13 @@ EOF;
         $charset    = $input->getOption('charset');
 
         $weberpath = realpath(__DIR__ . '/../../');
+        $conf = include($weberpath . '/includes/conf.php');
 
         $output->writeln([
             'Directory creating',
             '==================',
             ''
         ]);
-
-        $conf = include($weberpath . '/includes/conf.php');
 
         $weber = new Weber($this, $input, $output);
 

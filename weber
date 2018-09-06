@@ -11,7 +11,10 @@ use Weber\Command\SetupSiteCommand;
 use Weber\Command\DeleteSiteCommand;
 use Weber\Command\RenameSiteCommand;
 
-$app = new Application('weber', 'v2.2');
+$weberpath = realpath(__DIR__ . '/src');
+$conf = include($weberpath . '/includes/conf.php');
+
+$app = new Application('weber', $conf['version']);
 $app->add(new CreateDirectoryCommand());
 $app->add(new SetupSiteCommand());
 $app->add(new DeleteSiteCommand());

@@ -10,13 +10,16 @@ class CreateDirectoryCommandTest extends TestCase
 {
     public function testCreateDir()
     {
-        $dirname = 'test';
-        $path = realpath(__DIR__ . '/..') . '/' . $dirname;
+        $dirname = 'test' . uniqid();
+        $weberpath  = realpath(__DIR__ . '/..');
+        $path = $weberpath . '/' . $dirname;
+
+        $conf = include($weberpath . '/includes/conf.php');
 
         $_SERVER['argv']['create-directory'] = 'create-directory';
         $_SERVER['argv'][$dirname] = $dirname;
 
-        $app = new Application('weber', 'v2.3');
+        $app = new Application('weber', $conf['version']);
         $app->add(new CreateDirectoryCommand());
 
         $command = $app->find('create-directory');

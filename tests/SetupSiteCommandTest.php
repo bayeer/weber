@@ -11,23 +11,26 @@ class SetupSiteCommandTest extends TestCase
 {
     public function testSetupSite()
     {
-        $sitename = 'site1';
-        $dirname = 'site1.loc';
-        $weberpath = realpath(__DIR__ . '/..');
+        $sitename = uniqid('site_');
+        $dirname = $sitename . '.loc';
 
+        $weberpath = realpath(__DIR__ . '/..');
         $conf = include($weberpath . '/includes/conf.php');
 
 
-        $app = new Application('weber', 'v2.3');
+        $app = new Application('weber', $conf['version']);
         $app->add(new SetupSiteCommand());
         $app->add(new DeleteSiteCommand());
 
         $command = $app->find('setup-site');
         $commandTester = new CommandTester($command);
-        $commandTester->execute(array(
+        $commandTester->execute($args = array(
                                     'command' => $command->getName(),
                                     'sitename' => $sitename,
                                     'type' => 'bitrix'
+                                ),
+                                $options = array(
+                                    'distro' => 'no'
                                 ));
 
         $sitepath = $conf['document_root'] . '/' . $dirname;

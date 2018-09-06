@@ -52,7 +52,7 @@ return [
         'host'      => 'localhost',
         'username'  => 'root',
         'root_password'  => 'u16u12a',
-	'default_password' => '123',
+        'default_password' => '123',
         'charset'   => 'utf8',
         'collation' => 'utf8_general_ci'
     ],
@@ -63,6 +63,10 @@ return [
     /**
      * OS user group
      */
-    'os_usergroup' => 'vagrant'
+    'os_usergroup' => 'vagrant',
+    /**
+     * Version
+     */
+    'version' => 'v2.4'
 
 ];
