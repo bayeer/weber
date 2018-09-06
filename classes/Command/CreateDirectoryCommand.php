@@ -31,7 +31,7 @@ class CreateDirectoryCommand extends Command
         ]);
 
         if (file_exists($dirname) && is_dir($dirname)) {
-            throw new LogicException('Folder already exists');
+            throw new LogicException('Folder "'.$dirname.'" already exists');
         }
 
         if (false === mkdir($dirname)) {
