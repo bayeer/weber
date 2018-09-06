@@ -11,7 +11,7 @@ use Weber\Command\SetupSiteCommand;
 use Weber\Command\DeleteSiteCommand;
 use Weber\Command\RenameSiteCommand;
 
-$weberpath = realpath(__DIR__ . '/src');
+$weberpath = realpath(__DIR__);
 $conf = include($weberpath . '/includes/conf.php');
 
 $app = new Application('weber', $conf['version']);
