@@ -14,6 +14,10 @@ server {
 
 	root {$docRoot}{$dirName}/public;
 
+	add_header X-Frame-Options "SAMEORIGIN";
+	add_header X-XSS-Protection "1; mode=block";
+	add_header X-Content-Type-Options "nosniff";
+
 	location / {
 		allow 127.0.0.1;
 		deny all;
@@ -29,16 +33,9 @@ server {
 		fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
 	}
 
-	location = /favicon.ico {
-		log_not_found off;
-		access_log off;
-	}
+	location = /favicon.ico { access_log off; log_not_found off; }
+	location = /robots.txt  { access_log off; log_not_found off; }
 
-	location = /robots.txt {
-		allow all;
-		log_not_found off;
-		access_log off;
-	}
 	location ~* ^.+\.(jpg|jpeg|gif|png|svg|js|css|mp3|ogg|mpe?g|avi|zip|gz|bz2?|rar)\$ {
 		access_log off;
 		expires max;
@@ -46,7 +43,10 @@ server {
 	}
 
 	#все помнят это :)
-		location ~ /.svn/ {
+	location ~ /.svn/ {
+		deny all;
+	}
+	location ~ /.git/ {
 		deny all;
 	}
 
