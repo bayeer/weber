@@ -289,7 +289,7 @@ class Weber
     public function executeLaraComposer($docRoot, $dirName)
     {
         // creating laravel project via composer
-        if (false===shell_exec('composer create-project --prefer-dist laravel/laravel '.$docRoot.$dirName)) {
+        if (false===shell_exec('composer create-project --no-progress --profile --prefer-dist laravel/laravel '.$docRoot.$dirName)) {
             die('Creating laravel project in \''.$docRoot.$dirName.'\' failed.' . PHP_EOL);
         }
         $this->output->writeln('* laravel project created via composer in '.$docRoot.$dirName. PHP_EOL);
@@ -298,7 +298,7 @@ class Weber
     public function executeYii1Composer($docRoot, $dirName)
     {
         // creating laravel project via composer
-        if (false===shell_exec('composer create-project --prefer-dist yiisoft/yii '.$docRoot.$dirName)) {
+        if (false===shell_exec('composer create-project --no-progress --profile --prefer-dist yiisoft/yii '.$docRoot.$dirName)) {
             die('Creating yii1 project in \''.$docRoot.$dirName.'\' failed.' . PHP_EOL);
         }
 
@@ -311,7 +311,7 @@ class Weber
     public function executeYii2Composer($docRoot, $dirName)
     {
         // creating laravel project via composer
-        if (false===shell_exec('composer create-project --prefer-dist yiisoft/yii2-app-advanced '.$docRoot.$dirName)) {
+        if (false===shell_exec('composer create-project --no-progress --profile --prefer-dist yiisoft/yii2-app-basic '.$docRoot.$dirName)) {
             die('Creating yii2 project in \''.$docRoot.$dirName.'\' failed.' . PHP_EOL);
         }
         $this->output->writeln('* laravel project created via composer in '.$docRoot.$dirName. PHP_EOL);
