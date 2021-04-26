@@ -3,14 +3,16 @@ namespace Weber\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Exception\LogicException;
 use Weber\Weber;
 
+/**
+ * Class SetupSiteCommand
+ * @package Weber\Command
+ */
 class SetupSiteCommand extends Command
 {
     protected function configure()
@@ -30,15 +32,20 @@ EOF;
             ->setDescription('Sets up new site')
             ->setHelp($help)
             ->setDefinition(
-                new InputDefinition(array(
+                new InputDefinition([
                     new InputArgument('sitename', InputArgument::REQUIRED, 'The directory name.'),
                     new InputArgument('type', InputArgument::OPTIONAL, 'Site type', 'simple'),
                     new InputOption('charset', 'charset', InputArgument::OPTIONAL, 'The site character set', 'utf8'),
                     new InputOption('distro', 'dist', InputArgument::OPTIONAL, 'Download installation files', 'yes')
-                ))
+                ])
             );
     }
 
+    /**
+     * @param  InputInterface  $input
+     * @param  OutputInterface  $output
+     * @return int|void|null
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $sitename   = $input->getArgument('sitename');
