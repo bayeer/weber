@@ -5,12 +5,23 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
+/**
+ * Class Weber
+ * @package Weber
+ */
+
 class Weber
 {
     protected $command;
     protected $input;
     protected $output;
 
+    /**
+     * Weber constructor.
+     * @param Command $cmd
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     */
     public function __construct(Command $cmd, InputInterface $input, OutputInterface $output)
     {
         $this->command = $cmd;
@@ -18,6 +29,11 @@ class Weber
         $this->output = $output;
     }
 
+    /**
+     * @param $etcHostsLine
+     * @param $sitename
+     * @return bool
+     */
     public function isSitenameMatch($etcHostsLine, $sitename)
     {
         $parts = preg_split('/[\s]/', $etcHostsLine);
@@ -30,24 +46,10 @@ class Weber
         return false;
     }
 
-    public function getSiteCharset(&$args)
-    {
-        $charsets = array(
-            0=>'utf8', 
-            1=>'cp1251'
-        );
-        if (!array_key_exists('charset', $args)) {
-            return 'utf8';
-        }
-        $charset = trim($args['charset']); //$this->output->writeln(PHP_EOL.PHP_EOL.print_r($args,true).PHP_EOL.PHP_EOL);
-        if (!in_array($charset, $charsets)) {
-            $this->output->writeln("Error. Value of 'charset' argument can be either 'utf8' or 'cp1251'". PHP_EOL);
-            var_dump($args);
-            exit;
-        }
-        return $charset;
-    }
-
+    /**
+     * @param $siteName
+     * @return false|string
+     */
     public function getSitename($siteName)
     {
         // 2. getting sitename
@@ -69,6 +71,10 @@ class Weber
         return $siteName;
     }
 
+    /**
+     * @param $siteName
+     * @return string
+     */
     public function getSiteDomain($siteName)
     {
         // 2. getting sitename
@@ -88,6 +94,12 @@ class Weber
         return $domain;
     }
 
+    /**
+     * @param $docRoot
+     * @param $dirName
+     * @param $osUserName
+     * @param $osUserGroup
+     */
     public function setFolderOwner($docRoot, &$dirName, $osUserName, $osUserGroup)
     {
         if (false === shell_exec('sudo chown -R '.$osUserName.':'.$osUserGroup.' '.$docRoot.$dirName)) {
@@ -103,6 +115,10 @@ class Weber
         $this->output->writeln('chowned site directory'. PHP_EOL);
     }
 
+    /**
+     * @param $docRoot
+     * @param $dirName
+     */
     public function createDirectory($docRoot, &$dirName)
     {
         // 1. check if directory exists
@@ -117,6 +133,11 @@ class Weber
         $this->output->writeln(PHP_EOL. '* Created '.$docRoot.$dirName. PHP_EOL);
     }
 
+    /**
+     * @param $docRoot
+     * @param $dirName1
+     * @param $dirName2
+     */
     public function renameDirectory($docRoot, &$dirName1, &$dirName2)
     {
         // 1. check if directory exists
@@ -135,6 +156,10 @@ class Weber
         $this->output->writeln(PHP_EOL. '* Renamed '. $docRoot.$dirName1 . ' to '.$docRoot.$dirName2. PHP_EOL);
     }
 
+    /**
+     * @param $docRoot
+     * @param $dirname
+     */
     public function deleteDirectory($docRoot, &$dirname)
     {
         // 1. delete directory if directory exists
@@ -158,6 +183,9 @@ class Weber
         }
     }
 
+    /**
+     * @param $dirName
+     */
     public function addToEtcHosts(&$dirName)
     {
         // 1. getting contents of /etc/hosts
@@ -170,6 +198,9 @@ class Weber
         $this->output->writeln('* Writed to /etc/hosts'.PHP_EOL);
     }
 
+    /**
+     * @param $dirname
+     */
     public function deleteFromEtcHosts(&$dirname)
     {
         // 7. deleting site from /etc/hosts
@@ -192,6 +223,15 @@ class Weber
 
     }
 
+    /**
+     * @param string $type
+     * @param $docRoot
+     * @param $dirName
+     * @param $nginxConfDir
+     * @param $nginxLogDir
+     * @param $charset
+     * @param string $phpFpmSockPath
+     */
     public function createNginxConfig($type='simple', $docRoot, $dirName, $nginxConfDir, $nginxLogDir, $charset, $phpFpmSockPath='/var/run/php5-fpm.sock')
     {
         // * setting php flags in config
@@ -240,6 +280,10 @@ class Weber
         $this->output->writeln('* Symlink created '.$nginxSitesEnabledDir.'@'.$dirName.PHP_EOL);
     }
 
+    /**
+     * @param $nginxConfDir
+     * @param $dirName
+     */
     public function deleteNginxConfig($nginxConfDir, &$dirName)
     {
         $nginxSitesAvailableDir = $nginxConfDir.'sites-available/';
@@ -286,6 +330,10 @@ class Weber
         }
     }
 
+    /**
+     * @param $docRoot
+     * @param $dirName
+     */
     public function executeLaraComposer($docRoot, $dirName)
     {
         // creating laravel project via composer
@@ -295,6 +343,10 @@ class Weber
         $this->output->writeln('* laravel project created via composer in '.$docRoot.$dirName. PHP_EOL);
     }
 
+    /**
+     * @param $docRoot
+     * @param $dirName
+     */
     public function executeYii1Composer($docRoot, $dirName)
     {
         // creating laravel project via composer
@@ -308,6 +360,10 @@ class Weber
         $this->output->writeln('* Yii1 webapp created under '.$docRoot.$dirName.'/public'. PHP_EOL);
     }
 
+    /**
+     * @param $docRoot
+     * @param $dirName
+     */
     public function executeYii2Composer($docRoot, $dirName)
     {
         // creating laravel project via composer
@@ -317,6 +373,11 @@ class Weber
         $this->output->writeln('* laravel project created via composer in '.$docRoot.$dirName. PHP_EOL);
     }
 
+    /**
+     * @param $docRoot
+     * @param $dirName
+     * @param $charset
+     */
     public function processBitrix($docRoot, $dirName, &$charset)
     {
         // 1 downloading bitrixsetup.php script
@@ -377,6 +438,13 @@ EOF;
         shell_exec('chmod -R 777 ' . $docRoot.$dirName.'/');
     }
 
+    /**
+     * @param $dbhost
+     * @param $dbname
+     * @param $dbpass
+     * @param $dbrootpass
+     * @param $charset
+     */
     public function createMySqlUser($dbhost, $dbname, $dbpass, $dbrootpass, $charset)
     {
         try {
@@ -399,6 +467,13 @@ EOF;
         $this->output->writeln('* MySQL user `' . $dbname . '`@`localhost` successfully added'. PHP_EOL);
     }
 
+    /**
+     * @param $dbhost
+     * @param $dbrootpass
+     * @param $dbname1
+     * @param $dbname2
+     * @param string $charset
+     */
     public function renameMysqlDatabase($dbhost, $dbrootpass, $dbname1, $dbname2, $charset='utf8')
     {
         try {
@@ -464,6 +539,11 @@ EOF;
         }
     }
 
+    /**
+     * @param $dbhost
+     * @param $dbname
+     * @param $dbrootpass
+     */
     public function dropMysqlDatabase($dbhost, $dbname, $dbrootpass)
     {
         try {
@@ -503,6 +583,12 @@ EOF;
         }
     }
 
+    /**
+     * @param $dbhost
+     * @param $siteA
+     * @param $siteB
+     * @param $dbrootpass
+     */
     public function updateBoptionTable($dbhost, $siteA, $siteB, $dbrootpass)
     {
         try {
@@ -536,7 +622,9 @@ EOF;
         }
     }
 
-
+    /**
+     * @param $nginxRestartCommand
+     */
     public function restartNginx($nginxRestartCommand)
     {
         // restarting nginx via shell command
